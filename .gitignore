@@ -1,0 +1,25 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tooling
+node_modules/
+__pycache__/
+*.zip
+
+# Media you should NOT commit (copyright / privacy)
+assets/audio/*
+!assets/audio/README.md
+assets/photos/
+*.mp3
+*.m4a
+*.opus
+*.wav
+
+# Local source artwork (backup only)
+source/
+
+# Uncomment to keep the placeholder background photos out of Git
+# assets/bg/*.jpg

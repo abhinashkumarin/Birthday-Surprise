@@ -12,7 +12,7 @@ const CONFIG = {
   defaultFrom: 'yours truly',
   from: '',
   photo: 'assets/photo.jpg',
- message: [
+  message: [
     "<b>{name}</b>, first of all, a heartfelt <b>Happy Birthday!</b> Today is entirely yours. This website, this light, these balloons, this cake and all these photos exist only so that today you can feel just how <b>special you are</b>. It is a little gift from me, and every part of it is dedicated to <b>your smile</b>.",
     "<b>Happy Birthday, mere sabse special Beta ji!</b> 🎂🎂🎉🎉🥳🎊😚😚😚😚😚❤️✨🧿🧿🌏🌏🫂🫂❤️❤️🧿🧿",
     "<b>You are my favorite person in my life</b>🧿🧿🌏🌏🫂🫂❤️❤️😚😚✨✨🧿🧿— aap meri wo <b>khushi</b> 😚😚🧿🧿ho jise main kabhi words me express nahi kar sakta. Chahe kuch bhi ho, <b>main hamesha aapko hi choose karunga.</b> Hum hamesha saath rahein ya life humein kisi bhi raaste par le jaye, mera pyar aapke liye kabhi kam nahi hoga — <b>I love you sooo much</b> 😚😚😚😚😚😚😚😚😚❤️✨🧿🧿<b>today, tomorrow, and forever.</b> ♾️✨🧿🧿",
@@ -33,7 +33,7 @@ const CONFIG = {
       intro:       { file: 'channa-ve',         title: 'Channa Ve',                 vol: .45, loop: true },
       knife:       { file: 'je-tu-meri-jaan',   title: 'Je Tu Meri Jaan Vi Mangle', vol: .5,  loop: true },
       celebration: { file: 'happy-birthday',    title: 'Happy Birthday',            vol: .75, loop: false, then: 'intro' },
-      special:     { file: 'special-song',         title: 'Special Dedication Song',   vol: .65, loop: false },
+      special:     { file: 'special-song',      title: 'Special Dedication Song',   vol: .7,  loop: false },
       message:     { file: 'tainu-khabar-nahi', title: 'Tainu Khabar Nahi',         vol: .5,  loop: true }
     }
   }
@@ -154,13 +154,10 @@ const Audio_ = {
     catch (e) { name === 'celebration' ? this.synthParty() : this.synthAmbient(); }
   },
   async playFullTrack(name, skipBtn) {
-    let t = this.tracks[name];
+    const t = this.tracks[name];
     if (!t) return;
     await Promise.race([t.ready, wait(3000)]);
-    if (t.ok !== true && this.tracks.intro) {
-      t = this.tracks.intro;
-      await Promise.race([t.ready, wait(3000)]);
-    }
+
     const prev = this.tracks[this.now];
     this.now = t.name;
     this.synthStop();
@@ -528,12 +525,12 @@ const Balloons = {
     const box = $('#balloons'), W = innerWidth, H = innerHeight, n = S.letters.length;
     box.innerHTML = ''; box.classList.remove('glow', 'away');
     this.list = []; this.mode = 'float';
-    this.s = Math.min(96, W / (n + 1.4));
+    this.s = Math.min(86, W / (n + 1.6));
     box.style.setProperty('--s', this.s + 'px');
     S.letters.forEach((ch, i) => {
       const t = BT[['heart1', 'gold', 'black', 'clear', 'heart2', 'gold', 'black', 'heart3', 'clear'][i % 9]], el = document.createElement('div');
       el.className = 'balloon' + (t.cls === 'ty-heart' ? ' has-heart' : '');
-      el.style.cssText = `--s:${this.s * rnd(.85, 1.05)}px;${bstyle(t)}`;
+      el.style.cssText = `--s:${this.s * rnd(.88, 1.02)}px;${bstyle(t)}`;
       el.innerHTML = `<div class="body ${t.cls}"></div><i class="knot"></i><svg viewBox="0 0 30 80" preserveAspectRatio="none"><path d="M15 0C15 8 15 18 15 26S15 44 15 52S15 70 15 80"/></svg>`;
       el.querySelector('.body').textContent = ch;
       box.appendChild(el);
@@ -542,8 +539,14 @@ const Balloons = {
     this.t0 = performance.now(); requestAnimationFrame(t => this.frame(t));
   },
   targets() {
-    const W = innerWidth, n = this.list.length, gap = Math.min(W / (n + .6), this.s * 1.05);
-    const capTop = $('#cake').getBoundingClientRect().top + (Cake.topRel ?? -60) - 22, y = Math.max(82, capTop - this.s * 1.18 * .9);
+    const W = innerWidth, n = this.list.length, gap = Math.min(W / (n + .55), this.s * 1.1);
+    const neonEl = $('#neon');
+    const cakeTop = $('#cake').getBoundingClientRect().top;
+    const neonBottom = neonEl && getComputedStyle(neonEl).display !== 'none'
+      ? neonEl.getBoundingClientRect().bottom + 14
+      : 110;
+    const idealAboveCake = cakeTop - this.s * 1.28;
+    const y = Math.max(neonBottom, Math.min(idealAboveCake, cakeTop - this.s * 0.92));
     return this.list.map((b, i) => ({ x: W / 2 + (i - (n - 1) / 2) * gap, y }));
   },
   snap() {
@@ -1041,7 +1044,7 @@ async function celebrate() {
   FX.start(); Audio_.scene('celebration');
   for (let i = 0; i < 4; i++) setTimeout(() => FX.launch(), i * 220);
   await wait(1800);
-  $('#neon').classList.add('off'); document.body.classList.add('balloons');
+  $('#neon').classList.remove('dim'); document.body.classList.add('balloons');
   Deco.rise(); Deco.confetti(); Balloons.spawn();
   await wait(CONFIG.timing.floatMs);
   Balloons.snap();

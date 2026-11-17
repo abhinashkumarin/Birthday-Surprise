@@ -1,20 +1,7 @@
 /*!
  * Birthday Surprise — a cinematic, interactive birthday web experience.
- * Vanilla JavaScript, no dependencies, no build step.
- *
- * Flow:  name + 5 photos → title card → 3D cake → light candles → wish → blow →
- *        candles lift off → knife cuts the cake → fireworks + balloon name →
- *        photo gallery (Queen frame) → farewell → long glass-card message.
- *
- * Modules: CONFIG · State · Audio_ · Cake · Knife · FX · Balloons · Lights/Deco ·
- *          Photos · Gallery · Avatar · Message · timeline (init at the bottom).
  * License: MIT
  */
-/* =========================================================
-   CONFIG — everything you may want to change
-   (the name and the 5 photos are collected on the first screen;
-   the message, signature, songs and timing live here)
-   ========================================================= */
 const CONFIG = {
   lightLabel: 'Light the Candles ✦',
   lightHint: 'tap to light the candles',
@@ -23,43 +10,31 @@ const CONFIG = {
   cutLabel: 'Cut the Cake ✦',
   cutHint: 'tap to cut the cake',
   defaultFrom: 'yours truly',
-  from: '',                                  // sender name used in the signature, e.g. 'Rahul' (can also be passed as ?from=Rahul)
-  photo: 'assets/photo.jpg',                 // optional fallback photo
-  message: [                                 // {name} is replaced with the entered name (1000+ words)
-    "{name}, first of all, a heartfelt Happy Birthday! Today is entirely yours. This website, this light, these balloons, this cake and all these photos exist only so that today you can feel just how special you are. It is a little gift from me, and every part of it is dedicated to your smile.",
-    // "Sometimes we keep searching for big words to tell someone what they mean to us, but the honest truth is that finding a person like you is not easy. There is a light in your laughter that changes the mood of a room without saying a word. When you arrive, conversations feel lighter, and when you leave, the silence feels a little longer.",
-    // "This year must have taught you a lot. Some days were very sweet, some were heavy with exhaustion, and some were days when it felt like you could not go on any longer. But look at you, still standing, still smiling. Not everyone has that courage, {name}. So today, please take a little pride in yourself.",
-    // "The best thing about you is that you think about others far more than you ever think about yourself. You care for everyone, you look after everyone, and you never make a show of it. Today I have one small request: look after yourself too. Take the biggest slice of cake for yourself, listen to your favourite song, and laugh openly for no reason at all.",
-    // "I remember those little things that you may have even forgotten, but which are the most precious memories to me. That pointless laughter, those conversations that ran late into the night, those tiny fights that meant nothing and were sorted out in a second. Moments like these are not found in books; they simply build a home in our hearts.",
-    // "In the rush of life, all of us lose ourselves somewhere along the way. But looking at you, it feels like real happiness is not in big things, it is in small ones. A hot cup of tea, a good conversation, a true friend, and a smile that comes straight from the heart. You taught me this without even trying, and for that, thank you.",
-    // "My biggest prayer for you today is that all your dreams come true. The ones you said out loud, and the ones you quietly kept in your heart. May your hard work bear fruit, may every thorn on your path turn into a flower, and may the roads open up by themselves wherever you step.",
-    // "I also pray that your health always stays good, your mind always stays at peace, and that you are always surrounded by people who value you. People who accept you not just on good days, but in every state you are in. Because you deserve the kind of love that is given without conditions, without being weighed on any scale.",
-    // "If a day ever comes when everything feels scattered, just remember that you are not alone. Hard times come, and they pass. However long the night may be, the morning always arrives. And when that morning comes, in its light you will look even more beautiful and even stronger than before.",
-    // "Do you know what you are? You are like a lamp that does not go out even in a strong wind. You are like a flower that never forgets to bloom even among thorns. You are like a song that, once heard, stays on your lips all day. And truth be told, you are every bit a Queen, which is why this crown was made for you.",
-    // "For the year ahead, I only want to tell you this: learn more, travel more, laugh more, and love more, starting with yourself. Meet new people, choose new paths, make mistakes and learn to laugh at them. Life comes only once, and you have to live it with full grace, just like a Queen.",
-    // "Whatever light there is in this website is nothing before your light. Whatever balloons float up are lighter than your happiness. Whatever fireworks burst are smaller than your dreams. It was just an attempt to make you feel today the kind of special that you deserve every single day.",
-    // "Whenever you feel like you are somehow less, look at the photos above. They all have one thing in common: your real smile. That is your greatest strength. Never lose it, no matter what the world says, no matter what the circumstances. Because that very smile lights up someone's day, and perhaps mine too.",
-    // "So today, set aside all your complaints, postpone all your worries until tomorrow, and join the celebration with an open heart. Eat cake, sing songs, dance, take photos, and live every moment as if it were the most beautiful day of your life.",
-    // "And yes, one thing that perhaps was never said directly: many things become easier because of you. One line from you, one laugh, or just you saying that everything will be fine, truly gives courage. So today, the salute is not only for you, but also for that goodness in you which you share with people without a second thought.",
-    // "Every day spent with you is like a little story, with a bit of laughter, a bit of teasing, and a lot of belonging. I hope this story keeps adding beautiful pages just like this.",
-    // "Once again, from the depths of my heart, Happy Birthday {name}. May your life be filled with so much happiness that you cannot count it, so much love that you cannot hold it all, and so much success that the world takes your name. Keep smiling always, keep shining always, and always remember how priceless you are.",
-    // "One last wish for tonight: when you close your eyes to sleep, may there be only peace in your heart, a soft smile on your face, and just one word on your lips, thank you. Thank you for that day, for those people, and for every moment that brought you this far."
+  from: '',
+  photo: 'assets/photo.jpg',
+ message: [
+    "<b>{name}</b>, first of all, a heartfelt <b>Happy Birthday!</b> Today is entirely yours. This website, this light, these balloons, this cake and all these photos exist only so that today you can feel just how <b>special you are</b>. It is a little gift from me, and every part of it is dedicated to <b>your smile</b>.",
+    "<b>Happy Birthday, mere sabse special Beta ji!</b> 🎂🎂🎉🎉🥳🎊😚😚😚😚😚❤️✨🧿🧿🌏🌏🫂🫂❤️❤️🧿🧿",
+    "<b>You are my favorite person in my life</b>🧿🧿🌏🌏🫂🫂❤️❤️😚😚✨✨🧿🧿— aap meri wo <b>khushi</b> 😚😚🧿🧿ho jise main kabhi words me express nahi kar sakta. Chahe kuch bhi ho, <b>main hamesha aapko hi choose karunga.</b> Hum hamesha saath rahein ya life humein kisi bhi raaste par le jaye, mera pyar aapke liye kabhi kam nahi hoga — <b>I love you sooo much</b> 😚😚😚😚😚😚😚😚😚❤️✨🧿🧿<b>today, tomorrow, and forever.</b> ♾️✨🧿🧿",
+    "Aaj aapke birthday par bas yahi wish hai ki aap <b>hamesha khush raho, haste-muskurate raho</b> aur apni <b>health ka acche se dhyan rakho.</b> Please <b>man laga kar padhai karna Beta ji</b>, aur main bhi poori mehnat se padhunga taaki hum dono aage badh sakein. Aur ek promise — <b>galti kisi ki bhi ho, main hamesha pehle sorry bolunga, par aapko kabhi dukhi nahi hone dunga.</b>",
+    "<b>God bless you and Mahadev always bless you, Beta ji!</b> 🙏✨🧿🧿 Aaj aapka din hai — <b>aaj aapko jo bhi mujhse maangna hai, bejhijhak maang lo.</b> <b>Happy Birthday once again!</b> 🎂🎉🥳🎊🥳😚😚😚😚😚🧿🧿🧿🧿🧿🌏🌏🌏🌏🌏🫂🫂🫂🫂🫂❤️❤️❤️❤️✨🧿🧿",
+    "Once again, from the depths of my heart, <b>Happy Birthday {name}</b>. May your life be filled with so much <b>happiness</b> that you cannot count it, so much <b>love</b> that you cannot hold it all, and so much <b>success</b> that the world takes your name. <b>Keep smiling always, keep shining always, and always remember how priceless you are.</b>"
   ],
-  pace: 1.3,                                 // global speed factor: 1 = fast, higher = calmer (scales every pause and animation)
-  charDelay: 14,                             // typewriter speed in ms per letter
+  pace: 1.3,
+  charDelay: 14,
   colors: ['#f4b6c2', '#ffc766', '#3fa6a0', '#ff7a6b', '#b79be0', '#7fd1ae'],
   sparkColors: ['#ffc766', '#ffe3a3', '#ff8a3d', '#fff4e0', '#f4b6c2'],
   timing: { floatMs: 6400, holdMs: 5200 },
-  // One song per scene. Put the files in `assets/audio/` (any extension: mp3, m4a, opus, ogg, wav).
   audio: {
-    dirs: ['assets/audio/', 'assets/'],                       // looks in audio/ first, then in assets/
-    exts: ['mp3', 'm4a', 'opus', 'ogg', 'wav','mpeg'],
+    dirs: ['assets/audio/', 'assets/'],
+    exts: ['mpeg', 'mp3', 'm4a', 'opus', 'ogg', 'wav'],
     tracks: {
-      ambient:     { file: 'ambient',           title: 'Ambient',                   vol: .4,  loop: true },   // title card ("a surprise for you")
-      intro:       { file: 'channa-ve',         title: 'Channa Ve',                 vol: .45, loop: true },   // cake build-up, lighting the candles, the wish
-      knife:       { file: 'je-tu-meri-jaan',   title: 'Je Tu Meri Jaan Vi Mangle', vol: .5,  loop: true },   // from removing the candles to cutting the cake
-      celebration: { file: 'happy-birthday',    title: 'Happy Birthday',            vol: .75, loop: false, then: 'intro' }, // fireworks + balloons + gallery
-      message:     { file: 'tainu-khabar-nahi', title: 'Tainu Khabar Nahi',         vol: .5,  loop: true }    // the final long message
+      ambient:     { file: 'ambient',           title: 'Ambient',                   vol: .4,  loop: true },
+      intro:       { file: 'channa-ve',         title: 'Channa Ve',                 vol: .45, loop: true },
+      knife:       { file: 'je-tu-meri-jaan',   title: 'Je Tu Meri Jaan Vi Mangle', vol: .5,  loop: true },
+      celebration: { file: 'happy-birthday',    title: 'Happy Birthday',            vol: .75, loop: false, then: 'intro' },
+      special:     { file: 'special-song',         title: 'Special Dedication Song',   vol: .65, loop: false },
+      message:     { file: 'tainu-khabar-nahi', title: 'Tainu Khabar Nahi',         vol: .5,  loop: true }
     }
   }
 };
@@ -69,10 +44,13 @@ const wait = ms => new Promise(r => setTimeout(r, ms * (CONFIG.pace || 1)));
 const rnd = (a, b) => a + Math.random() * (b - a);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile = innerWidth < 700;
-const ease = { outCubic: t => 1 - Math.pow(1 - t, 3), outBack: t => { const c = 1.9; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); } };
+const ease = {
+  outCubic: t => 1 - Math.pow(1 - t, 3),
+  outBack: t => { const c = 1.9; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
+};
 
 /* =========================================================
-   STATE — the entered name is used everywhere
+   STATE
    ========================================================= */
 const S = { display: '', first: '', letters: [], from: '', lines: [] };
 
@@ -103,18 +81,18 @@ function setPhoto(src) {
 }
 
 /* =========================================================
-   AUDIO — files + Web Audio fallbacks
+   AUDIO
    ========================================================= */
 const Audio_ = {
   ctx: null, master: null, on: true, synthTimer: null, tracks: {}, now: null, npTimer: null,
   init() {
+    if (this.ctx) return;
     try {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
       this.master = this.ctx.createGain(); this.master.connect(this.ctx.destination);
     } catch (e) {}
     try { this.on = localStorage.getItem('music') !== 'off'; } catch (e) {}
     for (const [name, def] of Object.entries(CONFIG.audio.tracks)) this.tracks[name] = this.load(name, def);
-    // iOS/Android: unlock the other tracks inside this tap (user gesture) so they can start later on their own
     Object.values(this.tracks).slice(1).forEach(t => this.unlock(t));
     this.apply();
   },
@@ -123,7 +101,7 @@ const Audio_ = {
     t.ready = new Promise(res => { t.done = res; });
     el.preload = 'auto'; el.loop = !!def.loop; el.volume = 0;
     const cands = CONFIG.audio.dirs.flatMap(d => CONFIG.audio.exts.map(x => `${d}${def.file}.${x}`));
-    const next = () => {                                        // try the next file name / extension
+    const next = () => {
       if (t.i >= cands.length) { t.ok = false; t.done(); return; }
       el.src = cands[t.i++];
     };
@@ -153,19 +131,81 @@ const Audio_ = {
     requestAnimationFrame(step);
   },
   duck(f) { const t = this.tracks[this.now]; if (t) this.fadeTo(t.el, t.def.vol * f, 900); },
-  /* crossfade: the old song fades out while the new one fades in */
+  stopAll(fade = 800) {
+    this.synthStop();
+    const prev = this.tracks[this.now];
+    this.now = null;
+    if (prev) {
+      this.fadeTo(prev.el, 0, fade);
+      setTimeout(() => { prev.el.pause(); prev.el.currentTime = 0; }, fade + 100);
+    }
+  },
   async scene(name, fade = 1800) {
     const t = this.tracks[name]; if (!t || this.now === name) return;
     const prev = this.tracks[this.now]; this.now = name;
     this.synthStop();
     if (prev) { this.fadeTo(prev.el, 0, fade); setTimeout(() => { if (this.now !== prev.name) prev.el.pause(); }, fade + 150); }
     this.nowPlaying(t.def.title);
-    await Promise.race([t.ready, wait(5000)]);                  // wait for the file to load (the extension fallback may still be running)
+    await Promise.race([t.ready, wait(4000)]);
     if (this.now !== name) return;
-    if (t.ok === false) { name === 'celebration' ? this.synthParty() : this.synthAmbient(); return; }
+    if (t.ok !== true) { name === 'celebration' ? this.synthParty() : this.synthAmbient(); return; }
     try { t.el.currentTime = 0; } catch (e) {}
-    try { await t.el.play(); this.fadeTo(t.el, t.def.vol, Math.max(2200, fade)); }
-    catch (e) { name === 'celebration' ? this.synthParty() : this.synthAmbient(); }   // no audio file found: fall back to a soft synthesised tune
+    try { await t.el.play(); this.fadeTo(t.el, t.def.vol, Math.max(1200, fade)); }
+    catch (e) { name === 'celebration' ? this.synthParty() : this.synthAmbient(); }
+  },
+  async playFullTrack(name, skipBtn) {
+    let t = this.tracks[name];
+    if (!t) return;
+    await Promise.race([t.ready, wait(3000)]);
+    if (t.ok !== true && this.tracks.intro) {
+      t = this.tracks.intro;
+      await Promise.race([t.ready, wait(3000)]);
+    }
+    const prev = this.tracks[this.now];
+    this.now = t.name;
+    this.synthStop();
+    if (prev && prev !== t) {
+      this.fadeTo(prev.el, 0, 700);
+      setTimeout(() => prev.el.pause(), 800);
+    }
+    this.nowPlaying(CONFIG.audio.tracks[name]?.title || t.def.title);
+
+    if (t.ok !== true) {
+      this.synthAmbient();
+      await new Promise(resolve => {
+        const timer = setTimeout(resolve, 7000);
+        if (skipBtn) skipBtn.addEventListener('click', () => { clearTimeout(timer); resolve(); }, { once: true });
+      });
+      this.synthStop();
+      return;
+    }
+
+    const wasLoop = t.el.loop;
+    t.el.loop = false;
+    t.el.muted = !this.on;
+    try { t.el.currentTime = 0; } catch (e) {}
+    try {
+      await t.el.play();
+      this.fadeTo(t.el, t.def.vol, 800);
+    } catch (e) {
+      t.el.loop = wasLoop;
+      return;
+    }
+
+    await new Promise(resolve => {
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        t.el.loop = wasLoop;
+        t.el.removeEventListener('ended', finish);
+        t.el.removeEventListener('error', finish);
+        resolve();
+      };
+      t.el.addEventListener('ended', finish, { once: true });
+      t.el.addEventListener('error', finish, { once: true });
+      if (skipBtn) skipBtn.addEventListener('click', finish, { once: true });
+    });
   },
   nowPlaying(title) {
     const el = $('#np'); if (!title || !el) return;
@@ -207,8 +247,25 @@ const Audio_ = {
    ========================================================= */
 const Cake = {
   candleEls: [], lock: false,
+  reset() {
+    this.candleEls = [];
+    $('#candles').innerHTML = '';
+    $('#cake').classList.remove('plate-in');
+    $('#shadow').classList.remove('in');
+    document.querySelectorAll('.tier').forEach(t => t.classList.remove('in', 'drip'));
+    $('#garland').classList.remove('in');
+    $('.arch').classList.remove('on');
+    $('#neon').classList.remove('on', 'off', 'dim');
+    $('#slice').style.opacity = 0;
+    $('#cavity').style.opacity = 0;
+    $('#cl1').style.opacity = 0;
+    $('#cl2').style.opacity = 0;
+    $('#serve').classList.remove('in');
+    $('#knife').classList.remove('creamy');
+    $('#knife').style.opacity = 0;
+    this.build();
+  },
   build() {
-    // HAPPY on the top tier, BIRTHDAY on the middle tier — wax letters, each with its own flame
     const box = $('#candles'), pal = [['#fff1a0', '#ffd23f', '#c99a00'], ['#c58be0', '#8e3fb5', '#4d1a70'], ['#ffc08a', '#ff8a3d', '#b3470a'],
       ['#ff8f86', '#e5322f', '#8a0f10'], ['#8fd0ff', '#2f8fd8', '#124f8a'], ['#ffb0d0', '#ff5f9e', '#a31f5c']];
     const fxMap = { H: 22, P: 20, Y: 18, B: 20, R: 20, D: 20 }, wMap = { I: 24, Y: 56 };
@@ -247,11 +304,11 @@ const Cake = {
     for (const c of this.candleEls) { c.classList.add('in'); await wait(200); }
     $('#neon').classList.add('on');
     const cr = $('#cake').getBoundingClientRect();
-    this.topRel = Math.min(...this.candleEls.map(e => e.getBoundingClientRect().top)) - cr.top;   // used to place the balloon name row
-    Audio_.scene('intro', 3200);                                // once the cake is built, the ambient track slowly crossfades into the next song
+    this.topRel = Math.min(...this.candleEls.map(e => e.getBoundingClientRect().top)) - cr.top;
+    Audio_.scene('intro', 3200);
     Avatar.enter();
     await wait(600);
-    await Avatar.say('Today is my birthday! ✦', 1800);
+    await Avatar.say('Today is a special birthday! ✦', 1800);
     setUI(true, CONFIG.lightLabel, CONFIG.lightHint); phase = 'light';
   },
   extinguish() {
@@ -264,7 +321,7 @@ const Cake = {
       }
     });
   },
-  async removeCandles() {                                       // after blowing, all candles lift off the cake
+  async removeCandles() {
     Audio_.tone(990, .5, 'triangle', .04);
     this.candleEls.forEach((el, i) => {
       el.style.transition = `transform .9s cubic-bezier(.5,0,.8,.4) ${i * 55}ms, opacity .6s ${i * 55 + 300}ms`;
@@ -280,7 +337,7 @@ const Cake = {
 };
 
 /* =========================================================
-   KNIFE — glides in, makes two cuts, lifts the slice out
+   KNIFE
    ========================================================= */
 const Knife = {
   el: $('#knife'), hover: null,
@@ -288,7 +345,7 @@ const Knife = {
   async enter() {
     const c = $('#cake').offsetWidth, P = this.P;
     Audio_.swish();
-    const kr = this.el.getBoundingClientRect(), hd = Avatar.hand();             // the knife flies in from her hand
+    const kr = this.el.getBoundingClientRect(), hd = Avatar.hand();
     await this.el.animate([{ opacity: 0, transform: P(hd.x - (kr.left + kr.width / 2), hd.y - kr.bottom, 40) }, { offset: .12, opacity: 1 }, { opacity: 1, transform: P(-c * .075, -c * .22) }],
       { duration: 1500 * CONFIG.pace, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).finished;
     this.hover = this.el.animate([{ transform: P(-c * .075, -c * .22) }, { transform: P(-c * .075, -c * .26) }],
@@ -307,20 +364,19 @@ const Knife = {
   async cut() {
     const c = $('#cake').offsetWidth, w = c * .075, H = c * .66, P = this.P, k = this.el, ez = 'cubic-bezier(.5,0,.3,1)', D = 1650 * CONFIG.pace;
     if (this.hover) this.hover.cancel();
-    document.body.classList.add('slomo'); Audio_.duck(.25);               // slow-motion mood: the song ducks
+    document.body.classList.add('slomo'); Audio_.duck(.25);
     Avatar.pose('cut');
     const dive = async (x, line) => {
       Audio_.swish();
       line.animate([{ transform: 'scaleY(0)' }, { offset: .25, transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }], { duration: D, easing: ez, fill: 'forwards' });
-      setTimeout(() => this.crumbs(x, c * .02, 8), D * .3);                // the knife enters the cake
+      setTimeout(() => this.crumbs(x, c * .02, 8), D * .3);
       await k.animate([{ transform: P(x, -c * .22) }, { transform: P(x, H) }], { duration: D, easing: ez, fill: 'forwards' }).finished;
       this.crumbs(x, c * .6, 6, ['#5a301f', '#4b2517', '#c99a76']);
     };
     await dive(-w, $('#cl1'));
-    k.classList.add('creamy');                                             // cream sticks to the blade
+    k.classList.add('creamy');
     await k.animate([{ transform: P(-w, H) }, { transform: P(-w, -c * .22) }, { transform: P(w, -c * .22) }], { duration: 1300 * CONFIG.pace, easing: 'ease-in-out', fill: 'forwards' }).finished;
     await dive(w, $('#cl2'));
-    // the slice comes free
     $('#slice').style.opacity = 1; $('#cavity').style.opacity = 1;
     $('#cl1').style.opacity = 0; $('#cl2').style.opacity = 0;
     Audio_.chime(); this.crumbs(0, c * .15, 18);
@@ -328,9 +384,9 @@ const Knife = {
     const end = `translate(${c * .385}px,${c * .47}px) scale(.42) rotate(-6deg)`;
     await $('#slice').animate([
       { transform: 'none', opacity: 1 },
-      { offset: .16, transform: `translate(0,${c * .015}px) scale(1.03)`, opacity: 1 },                          // loosens slowly
-      { offset: .36, transform: `translate(0,${c * .07}px) scale(1.16) rotate(2deg)`, opacity: 1 },             // pulled forward
-      { offset: .62, transform: `translate(${c * .17}px,${c * .03}px) scale(.88) rotate(-5deg)`, opacity: 1 },  // lifted in an arc
+      { offset: .16, transform: `translate(0,${c * .015}px) scale(1.03)`, opacity: 1 },
+      { offset: .36, transform: `translate(0,${c * .07}px) scale(1.16) rotate(2deg)`, opacity: 1 },
+      { offset: .62, transform: `translate(${c * .17}px,${c * .03}px) scale(.88) rotate(-5deg)`, opacity: 1 },
       { offset: .88, transform: end, opacity: 1 },
       { transform: end, opacity: 0 }
     ], { duration: 2400 * CONFIG.pace, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }).finished;
@@ -342,7 +398,7 @@ const Knife = {
 };
 
 /* =========================================================
-   PARTICLES — sparklers + sky shots (canvas)
+   PARTICLES
    ========================================================= */
 const FX = {
   cv: $('#fx'), ps: [], rockets: [], glows: [], run: false, last: 0, nextRocket: 0, finale: 5,
@@ -360,6 +416,11 @@ const FX = {
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && this.run) { this.last = performance.now(); requestAnimationFrame(t => this.loop(t)); }
     });
+  },
+  stop() {
+    this.run = false;
+    this.ps = []; this.rockets = []; this.glows = [];
+    if (this.c) this.c.clearRect(0, 0, this.W, this.H);
   },
   spark(x, y, vx, vy, life, color, g = 260, w = 1.3, drag = 1, lim = this.cap, crack = false) {
     if (this.ps.length < lim) this.ps.push({ x, y, px: x, py: y, vx, vy, life, max: life, color, g, w, drag, crack });
@@ -396,7 +457,6 @@ const FX = {
     const c = this.c;
     c.globalCompositeOperation = 'destination-out'; c.fillStyle = 'rgba(0,0,0,.25)'; c.fillRect(0, 0, this.W, this.H);
     c.globalCompositeOperation = 'lighter'; c.lineCap = 'round';
-    // burst glows
     for (let i = this.glows.length - 1; i >= 0; i--) {
       const g = this.glows[i]; g.life -= dt;
       if (g.life <= 0) { this.glows.splice(i, 1); continue; }
@@ -405,14 +465,12 @@ const FX = {
       c.globalAlpha = g.life / g.max * .2; c.fillStyle = gr; c.fillRect(g.x - g.r, g.y - g.r, g.r * 2, g.r * 2);
     }
     c.globalAlpha = 1;
-    // sparklers around the cake
     const r = $('#cake').getBoundingClientRect();
     const em = [[r.left - 8, r.bottom - 6], [r.right + 8, r.bottom - 6], [r.left + r.width * .22, r.bottom + 4], [r.right - r.width * .22, r.bottom + 4], [r.left + r.width / 2, r.bottom + 8]];
     for (const [ex, ey] of em) for (let i = 0; i < (reduce || isMobile ? 2 : 4); i++) {
       const a = -Math.PI / 2 + rnd(-1.2, 1.2), s = rnd(60, 220);
       this.spark(ex, ey, Math.cos(a) * s, Math.sin(a) * s, rnd(.3, .8), Math.random() < .25 ? '#fff' : CONFIG.sparkColors[Math.random() * 2 | 0], 300, 1.1, 1);
     }
-    // sky shots
     this.nextRocket -= dt;
     if (this.nextRocket <= 0) {
       this.nextRocket = reduce ? rnd(1.2, 2) : rnd(.45, 1);
@@ -428,7 +486,6 @@ const FX = {
         this.rockets.splice(i, 1);
       }
     }
-    // particles
     for (let i = this.ps.length - 1; i >= 0; i--) {
       const p = this.ps[i]; p.life -= dt;
       if (p.life <= 0) {
@@ -445,9 +502,8 @@ const FX = {
   }
 };
 
-
 /* =========================================================
-   BALLOON TYPES — pink hearts, gold, black glitter, clear confetti (+ curly ribbons)
+   BALLOONS
    ========================================================= */
 const BT = {
   heart1: { cls: 'ty-heart', c: ['#ffd6e0', '#ff8fa8', '#d9496f'], lc: '#fff', rib: '#e8a98f' },
@@ -460,14 +516,18 @@ const BT = {
 const bstyle = t => `--c1:${t.c[0]};--c2:${t.c[1]};--c3:${t.c[2]};--lc:${t.lc};--rib:${t.rib}`;
 const RIBBON = '<svg class="rib" viewBox="0 0 30 80" preserveAspectRatio="none" aria-hidden="true"><path d="M15 0C25 8 5 18 15 26S25 44 15 52S5 70 15 80"/></svg>';
 
-/* =========================================================
-   BALLOONS — float, snap into a row behind the cake, hold
-   ========================================================= */
 const Balloons = {
   list: [], mode: 'float', t0: 0, tSnap: 0,
   shade(hex, k) { const n = parseInt(hex.slice(1), 16); const f = v => Math.max(0, Math.min(255, v * k | 0)); return `rgb(${f(n >> 16)},${f(n >> 8 & 255)},${f(n & 255)})`; },
+  reset() {
+    this.list = []; this.mode = 'gone';
+    const box = $('#balloons');
+    box.innerHTML = ''; box.classList.remove('glow', 'away');
+  },
   spawn() {
     const box = $('#balloons'), W = innerWidth, H = innerHeight, n = S.letters.length;
+    box.innerHTML = ''; box.classList.remove('glow', 'away');
+    this.list = []; this.mode = 'float';
     this.s = Math.min(96, W / (n + 1.4));
     box.style.setProperty('--s', this.s + 'px');
     S.letters.forEach((ch, i) => {
@@ -483,7 +543,7 @@ const Balloons = {
   },
   targets() {
     const W = innerWidth, n = this.list.length, gap = Math.min(W / (n + .6), this.s * 1.05);
-    const capTop = $('#cake').getBoundingClientRect().top + (Cake.topRel ?? -60) - 22, y = Math.max(64, capTop - this.s * 1.18 * .9);
+    const capTop = $('#cake').getBoundingClientRect().top + (Cake.topRel ?? -60) - 22, y = Math.max(82, capTop - this.s * 1.18 * .9);
     return this.list.map((b, i) => ({ x: W / 2 + (i - (n - 1) / 2) * gap, y }));
   },
   snap() {
@@ -522,12 +582,12 @@ const Balloons = {
 };
 
 /* =========================================================
-   LIGHTS — string lights, greenery, Edison pendants, fairy lights
+   LIGHTS & DECO
    ========================================================= */
 const Lights = {
   build() {
-    const W = innerWidth, m = W < 700, n = Math.ceil(W / (m ? W / 4 : 120)), sw = W / n, sag = m ? 16 : 24, per = m ? 3 : 4;
-    const cols = ['#ffc766', '#f4b6c2', '#ff8a3d', '#3fa6a0', '#b79be0', '#fff4e0']; let d = 'M0 0', bulbs = '';
+    const W = innerWidth, m = W < 700, n = Math.ceil(W / (m ? W / 5 : 110)), sw = W / n, sag = m ? 15 : 22, per = m ? 4 : 5;
+    const cols = ['#ffd269', '#ffe8a3', '#ffb347', '#f4b6c2', '#ffd269', '#fff4e0']; let d = 'M0 0', bulbs = '';
     for (let i = 0; i < n; i++) {
       const x0 = i * sw; d += ` Q${x0 + sw / 2} ${sag * 2} ${x0 + sw} 0`;
       for (let j = 1; j <= per; j++) {
@@ -536,16 +596,16 @@ const Lights = {
       }
     }
     const gr = ['#3f6a3a', '#5b8a45', '#2f5232', '#7da04f']; let g = '';
-    for (let x = 14; x < W; x += m ? 50 : 70) {
-      const L = rnd(20, m ? 34 : 50), sx = rnd(-8, 8), c = 3 + (Math.random() * 3 | 0);
+    for (let x = 14; x < W; x += m ? 46 : 66) {
+      const L = rnd(18, m ? 30 : 46), sx = rnd(-8, 8), c = 3 + (Math.random() * 3 | 0);
       g += `<path d="M${x} 0Q${x + sx} ${L / 2} ${x + sx / 2} ${L}" stroke="#2c4a2b" stroke-width="1" fill="none"/>`;
       for (let k = 1; k <= c; k++) {
         const cx = (x + sx * (k / c) * .6 + (k % 2 ? 4 : -4)).toFixed(1), cy = (L * k / c).toFixed(1), a = ((k % 2 ? 35 : -35) + rnd(-15, 15)).toFixed(0);
         g += `<ellipse cx="${cx}" cy="${cy}" rx="3" ry="7" transform="rotate(${a} ${cx} ${cy})" fill="${gr[(k + (x | 0)) % 4]}"/>`;
       }
     }
-    const px = m ? [.55, .7, .84] : [.3, .42, .55, .68, .8, .92], Ls = [34, 64, 40, 76, 30, 58]; let pend = '';
-    px.forEach((p, i) => pend += `<div class="pend" style="left:${(p * W).toFixed(0)}px;--L:${m ? Ls[i] * .7 | 0 : Ls[i]}px;animation-delay:-${(i * .9).toFixed(1)}s"><i class="sock"></i><i class="glass"></i></div>`);
+    const px = m ? [.46, .62, .78] : [.28, .4, .52, .64, .76, .88], Ls = [30, 56, 36, 68, 28, 52]; let pend = '';
+    px.forEach((p, i) => pend += `<div class="pend" style="left:${(p * W).toFixed(0)}px;--L:${m ? Ls[i] * .65 | 0 : Ls[i]}px;animation-delay:-${(i * .9).toFixed(1)}s"><i class="sock"></i><i class="glass"></i></div>`);
     $('#lights').innerHTML = `<svg width="${W}" height="${sag * 2 + 4}"><g>${g}</g><path class="wire" d="${d}"/></svg>${bulbs}${pend}`;
     $('#fairy').innerHTML = Array.from({ length: Math.floor(W / 14) }, () =>
       `<i style="left:${rnd(0, 100).toFixed(1)}%;bottom:${rnd(3, 34).toFixed(0)}px;animation-delay:-${rnd(0, 3).toFixed(1)}s"></i>`).join('');
@@ -553,7 +613,6 @@ const Lights = {
 };
 Lights.build(); addEventListener('resize', () => Lights.build());
 
-/* DECO — balloon garland, bokeh, rising balloons, marquee letters */
 const Deco = {
   build() {
     const cols = ['#f2a98b', '#e8b45a', '#f4b6c2', '#ff7a6b', '#3fa6a0', '#fff4e0', '#b79be0'], k = innerWidth < 700 ? .7 : 1; let h = '', i = 0;
@@ -588,9 +647,8 @@ const Marquee = {
   }
 };
 
-
 /* =========================================================
-   PHOTOS — exactly 5 photos are required; one of them becomes the Queen (centre) photo
+   PHOTOS
    ========================================================= */
 const Photos = {
   list: [], queen: 0, max: 5,
@@ -608,7 +666,7 @@ const Photos = {
     }
     this.render();
   },
-  async prep(f) {                                           // downscale very large photos to 1600px with high-quality smoothing (sharp, EXIF-correct, light on memory)
+  async prep(f) {
     try {
       const bmp = await createImageBitmap(f), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
       if (k === 1 && f.size < 1.5e6) { if (bmp.close) bmp.close(); return URL.createObjectURL(f); }
@@ -656,7 +714,7 @@ const Photos = {
 };
 
 /* =========================================================
-   GALLERY — Queen frame (with crown) + 4 decorated frames
+   GALLERY
    ========================================================= */
 const Gallery = {
   bloom(a, b) {
@@ -689,7 +747,7 @@ const Gallery = {
     const spk = xs.map((x, i) => `<i class="sp" style="--x:${x}%;--y:${ys[i]};--d:-${(i * .27).toFixed(2)}s"></i>`).join('');
     $('#gWall').innerHTML =
       fig(o[0], 'o1', 'oval', this.cluster('c', 3)) + fig(o[1], 'i1', 'rect', this.cluster('c', 3)) +
-      fig(q, 'queen', 'queen', this.crown + `<div class="sparks">${spk}</div>` + this.cluster('l', 6) + this.cluster('r', 6) + '<figcaption class="cap script" id="gCap"></figcaption>') +
+      fig(q, 'queen', 'queen', this.crown + `<div class="sparks">${spk}</div>` + this.cluster('l', 5) + this.cluster('r', 5) + '<figcaption class="cap script" id="gCap"></figcaption>') +
       fig(o[2], 'i2', 'rect', this.cluster('c', 3)) + fig(o[3], 'o2', 'oval', this.cluster('c', 3));
     $('#gCap').textContent = S.display; $('#gTitle').textContent = S.display;
     const k = innerWidth < 700 ? .75 : 1;
@@ -701,38 +759,37 @@ const Gallery = {
   async show() {
     document.body.classList.add('gal'); document.body.dataset.scene = 'gallery';
     this.build();
+    $('#gNext').classList.remove('show');
     const g = $('#gallery'); g.scrollTop = 0; g.classList.add('show');
-    await wait(1400);
+    await wait(1200);
     for (const k of ['o1', 'o2', 'i1', 'i2', 'queen']) {
-      g.querySelector('.fr.' + k).classList.add('in'); Audio_.tone(440 + Math.random() * 300, .6, 'sine', .04); await wait(700);
+      g.querySelector('.fr.' + k).classList.add('in'); Audio_.tone(440 + Math.random() * 300, .6, 'sine', .04); await wait(600);
     }
-    await wait(500);
+    await wait(450);
     g.querySelector('.crown').classList.add('on'); g.querySelector('.sparks').classList.add('on'); Audio_.chime();
-    await wait(1600);
+    await wait(1400);
     $('#gNext').classList.add('show');
     await new Promise(r => $('#gNext').addEventListener('click', r, { once: true }));
-    g.classList.remove('show'); await wait(1500);
+    g.classList.remove('show'); await wait(1200);
     document.body.classList.remove('gal');
   }
 };
 
 /* =========================================================
-   AVATAR — the rigged character: lights the candles, blows them out, hands over the knife
+   AVATAR
    ========================================================= */
 const Avatar = {
   el: $('#avatar'), talking: false, alive: false,
-  build() {},                                                   // the character is made of static PNG layers (assets/rig)
-  /* screen position of an invisible anchor that rotates with its body part */
+  build() {},
   anchor(sel) { const r = this.el.querySelector(sel).getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; },
-  hand() { return this.anchor('.rg-arm.r .pt.hand'); },        // right palm: the match and the knife start here
-  mouthPos() { return this.anchor('.rg-head .pt.mouth'); },    // the wind starts here
-  enter() { this.el.classList.add('show'); this.pose('idle'); this.life(); },
+  hand() { return this.anchor('.rg-arm.r .pt.hand'); },
+  mouthPos() { return this.anchor('.rg-head .pt.mouth'); },
+  enter() { this.el.classList.remove('gone', 'big', 'exit'); this.el.classList.add('show'); this.pose('idle'); this.life(); },
   pose(p) {
     this.el.dataset.pose = p;
     if (p === 'cheer') { this.setMouth('wide'); setTimeout(() => this.setMouth('closed'), 1800); }
   },
   setMouth(m) { this.el.dataset.mouth = m; },
-  /* random blinking (every 2.4 - 6 s) */
   life() {
     if (this.alive) return; this.alive = true;
     let next = performance.now() + 2500;
@@ -742,11 +799,10 @@ const Avatar = {
     };
     requestAnimationFrame(tick);
   },
-  /* lip movement while she speaks */
   async talk(ms) {
     this.talking = true; const n = Math.ceil(ms * CONFIG.pace / 170);
     for (let i = 0; i < n && this.talking; i++) {
-      this.setMouth(['o', 'wide', 'wide', 'o', 'closed', 'wide'][Math.random() * 6 | 0]);
+      this.setMouth(['wide', 'wide', 'closed', 'wide'][Math.random() * 4 | 0]);
       await new Promise(r => setTimeout(r, 90 + Math.random() * 120));
     }
     this.setMouth('closed');
@@ -758,14 +814,13 @@ const Avatar = {
     await wait(ms); this.talking = false; await t;
     b.classList.remove('show'); await wait(250);
   },
-  /* flying match lights the wax letters one by one */
   async lightAll() {
     const g = this.hand(), m = $('#fmatch'), P = (x, y, r) => `translate(${x}px,${y}px) rotate(${r}deg)`;
     let cur = P(g.x - 4, g.y, 18);
     m.style.display = 'block'; m.style.opacity = 1;
     for (const [i, el] of Cake.candleEls.entries()) {
       const r = el.getBoundingClientRect(), fx = parseFloat(el.style.getPropertyValue('--fx')) / 100;
-      const to = P(r.left + r.width * fx - 4, r.top + 9, 18);               // the match flame touches the wick
+      const to = P(r.left + r.width * fx - 4, r.top + 9, 18);
       await m.animate([{ transform: cur }, { transform: to }], { duration: 240 * CONFIG.pace, easing: 'ease-in-out', fill: 'forwards' }).finished;
       el.classList.remove('unlit'); el.classList.add('pop'); Audio_.tone(700 + i * 40, .35, 'sine', .035);
       cur = to; await wait(120);
@@ -773,9 +828,8 @@ const Avatar = {
     await m.animate([{ transform: cur, opacity: 1 }, { transform: cur + ' translateY(-24px)', opacity: 0 }], { duration: 500 * CONFIG.pace, fill: 'forwards' }).finished;
     m.style.display = 'none';
   },
-  /* cheeks puff, wind streaks fly to the cake, flames bend and go out */
   async blow() {
-    this.pose('blow'); this.setMouth('o'); Audio_.noise(1.1, .28, 2400);
+    this.pose('blow'); this.setMouth('wide'); Audio_.noise(1.1, .28, 2400);
     const mo = this.mouthPos(), hx = mo.x, hy = mo.y;
     const rs = Cake.candleEls.map(e => e.getBoundingClientRect());
     const tx = rs.reduce((a, r) => a + r.left + r.width / 2, 0) / rs.length, ty = rs.reduce((a, r) => a + r.top, 0) / rs.length;
@@ -794,15 +848,63 @@ const Avatar = {
     await wait(700);
     this.pose('idle'); this.setMouth('closed');
   },
-  /* last: she steps forward, says her line, walks away → message */
   async farewell() {
     const a = this.el; a.classList.remove('gone'); a.classList.add('show', 'big');
-    await wait(1000);
-    await this.say("I am going to read the message… ✦", 3000, 'wave');
+    await wait(900);
+    await this.say("I am going to read the message… ✦", 2600, 'wave');
     this.pose('walk'); a.classList.add('exit'); await wait(1100);
     a.classList.remove('show', 'big', 'exit'); a.classList.add('gone');
   }
 };
+
+/* =========================================================
+   SONG PROMPT (YES / NO BEFORE MESSAGE)
+   ========================================================= */
+async function askSongBeforeMessage() {
+  const modal = $('#songPrompt');
+  const btns = $('#spBtns');
+  const playing = $('#spPlaying');
+  const yesBtn = $('#songYes');
+  const noBtn = $('#songNo');
+  const skipBtn = $('#songSkip');
+
+  $('#spDesc').textContent = `${S.first}, I want to play a special song for you before reading the message. Would you like to listen?`;
+  btns.hidden = false;
+  playing.hidden = true;
+  modal.hidden = false;
+  modal.style.display = 'grid';
+
+  await new Promise(r => requestAnimationFrame(() => {
+    modal.classList.add('show');
+    r();
+  }));
+
+  const choice = await new Promise(resolve => {
+    let picked = false;
+    const pick = val => e => {
+      if (picked) return;
+      picked = true;
+      if (e) e.stopPropagation();
+      resolve(val);
+    };
+    yesBtn.onclick = pick(true);
+    noBtn.onclick = pick(false);
+  });
+
+  if (choice) {
+    btns.hidden = true;
+    playing.hidden = false;
+    $('#spNow').textContent = `Playing "${CONFIG.audio.tracks.special.title}" for ${S.first}…`;
+    await Audio_.playFullTrack('special', skipBtn);
+    Audio_.stopAll(700);
+    await wait(500);
+  }
+
+  modal.classList.remove('show');
+  await wait(550);
+  modal.hidden = true;
+  modal.style.display = 'none';
+}
 
 /* =========================================================
    SUBTITLES + MESSAGE
@@ -815,21 +917,62 @@ const Message = {
     const a = el.getBoundingClientRect(), b = card.getBoundingClientRect();
     if (a.bottom > b.bottom - 50) card.scrollTop += a.bottom - b.bottom + 90;
   },
+  reset() {
+    $('#msg').classList.remove('show');
+    $('#mq').classList.remove('on');
+    $('#full').innerHTML = '';
+    $('#typed').innerHTML = '';
+    $('#sign').classList.remove('show');
+    $('#skip').classList.remove('show');
+    $('#endActions').classList.remove('show');
+  },
+  parseTokens(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const tokens = [];
+    const walk = (node, bold) => {
+      if (node.nodeType === 3) {
+        for (const ch of [...node.textContent]) tokens.push({ ch, bold });
+      } else if (node.nodeType === 1) {
+        const isBold = bold || node.tagName === 'B' || node.tagName === 'STRONG';
+        node.childNodes.forEach(c => walk(c, isBold));
+      }
+    };
+    tmp.childNodes.forEach(c => walk(c, false));
+    return tokens;
+  },
   async show() {
     document.body.classList.add('msgmode'); document.body.dataset.scene = 'message';
     const full = $('#full'), box = $('#typed'), card = $('.card'), skip = $('#skip');
-    S.lines.forEach(l => { const p = document.createElement('p'); p.textContent = l; full.appendChild(p); });
+    full.innerHTML = ''; box.innerHTML = ''; $('#sign').classList.remove('show');
+    S.lines.forEach(l => { const p = document.createElement('p'); p.innerHTML = l; full.appendChild(p); });
     $('#msg').classList.add('show'); $('#mq').classList.add('on');
-    await wait(1600);
+    await wait(1400);
     let fast = false, follow = true;
     skip.classList.add('show'); skip.onclick = () => { fast = true; skip.classList.remove('show'); };
     ['wheel', 'touchmove'].forEach(ev => card.addEventListener(ev, () => { follow = false; }, { passive: true }));
     for (const line of S.lines) {
-      const p = document.createElement('p'), cur = document.createElement('span'), ch = [...line];
+      const p = document.createElement('p'), cur = document.createElement('span');
+      const tokens = this.parseTokens(line);
       cur.className = 'cursor'; box.appendChild(p); p.appendChild(cur);
-      for (let i = 0; i < ch.length; i++) {
-        if (fast) { cur.before(ch.slice(i).join('')); break; }
-        cur.before(ch[i]);
+      let activeBold = null;
+      for (let i = 0; i < tokens.length; i++) {
+        if (fast) {
+          p.innerHTML = line;
+          break;
+        }
+        const { ch, bold } = tokens[i];
+        if (bold) {
+          if (!activeBold) {
+            activeBold = document.createElement('b');
+            activeBold.style.color = '#ffd98a';
+            cur.before(activeBold);
+          }
+          activeBold.append(ch);
+        } else {
+          activeBold = null;
+          cur.before(ch);
+        }
         if (i % 24 === 0 && follow) this.follow(card, cur);
         await wait(CONFIG.charDelay);
       }
@@ -838,7 +981,7 @@ const Message = {
     }
     skip.classList.remove('show');
     $('#sign').classList.add('show'); if (follow) card.scrollTo({ top: card.scrollHeight, behavior: 'smooth' });
-    await wait(1500); $('#replay').classList.add('show');
+    await wait(1200); $('#endActions').classList.add('show');
   },
   petals() {
     const box = $('#petals'), n = reduce ? 10 : 26;
@@ -852,7 +995,6 @@ const Message = {
 
 /* =========================================================
    TIMELINE
-   wish → candles out → knife → cut → fireworks + balloons → message
    ========================================================= */
 let phase = 'idle';
 function setUI(show, label, hint) {
@@ -865,52 +1007,82 @@ async function onAction() {
   else if (phase === 'wish') await blowOut();
   else if (phase === 'cut') await cutAndCelebrate();
 }
-async function lightCandles() {                             // 1) light the candles
+async function lightCandles() {
   phase = 'busy'; setUI(false);
   await Avatar.say('Lighting the candles…', 1500, 'light');
   await Avatar.lightAll();
   Avatar.pose('idle');
-  await Avatar.say('Now I will make a lovely wish ✦', 2200);
+  await Avatar.say('Now make a lovely wish ✦', 2000);
   setUI(true, CONFIG.buttonLabel, CONFIG.hint); phase = 'wish';
 }
-async function blowOut() {                                  // 2) wish → blow → remove candles → knife
+async function blowOut() {
   phase = 'busy'; setUI(false);
-  await Avatar.say('Wish made… now I will blow them out!', 1800);
+  await Avatar.say('Wish made… blowing them out!', 1700);
   await Avatar.blow();
-  Audio_.scene('knife');                                    // candles out → switch to the knife-scene song
+  Audio_.scene('knife');
   await Cake.removeCandles();
-  Avatar.say('Candles removed ✦', 1800);
+  Avatar.say('Candles removed ✦', 1600);
   document.body.classList.add('cine'); $('#neon').classList.add('dim');
-  Sub.say(`Did you make a wish, ${S.first}?`, 2400);
+  Sub.say(`Did you make a wish, ${S.first}?`, 2200);
   await Knife.enter();
   setUI(true, CONFIG.cutLabel, CONFIG.cutHint); phase = 'cut';
 }
-async function cutAndCelebrate() {                          // 3) cutting the cake
+async function cutAndCelebrate() {
   phase = 'busy'; setUI(false);
-  Avatar.say('Now I will cut the cake!', 1800);
-  Sub.say('A sweet little moment…', 3200);
+  Avatar.say('Cutting the cake!', 1600);
+  Sub.say('A sweet little moment…', 3000);
   Cake.freeze(true);
   await Knife.cut();
   await celebrate();
 }
 async function celebrate() {
   document.body.classList.remove('cine'); Cake.freeze(false);
-  document.body.classList.add('lit');                       // room ignites
+  document.body.classList.add('lit');
   FX.start(); Audio_.scene('celebration');
   for (let i = 0; i < 4; i++) setTimeout(() => FX.launch(), i * 220);
   await wait(1800);
   $('#neon').classList.add('off'); document.body.classList.add('balloons');
-  Deco.rise(); Deco.confetti(); Balloons.spawn();                            // balloons float
+  Deco.rise(); Deco.confetti(); Balloons.spawn();
   await wait(CONFIG.timing.floatMs);
-  Balloons.snap();                                          // snap into a row
+  Balloons.snap();
   await wait(2800);
   Balloons.mode = 'hold'; $('#balloons').classList.add('glow'); document.body.classList.add('hold'); Avatar.pose('idle');
   await wait(CONFIG.timing.holdMs);
-  $('#balloons').classList.add('away');                     // balloons leave
+  $('#balloons').classList.add('away');
   await wait(1200); Balloons.mode = 'gone';
-  await Gallery.show();                                     // 5 photos, queen frame
-  await Avatar.farewell();                                  // "I am going to read the message"
-  Audio_.scene('message'); Message.petals(); await Message.show();   // glass message
+  await Gallery.show();
+  await askSongBeforeMessage();
+  await Avatar.farewell();
+  Audio_.scene('message'); Message.petals(); await Message.show();
+}
+
+async function startSequence() {
+  phase = 'busy';
+  Audio_.init(); Audio_.scene('ambient');
+  const intro = $('#intro');
+  intro.classList.remove('gone');
+  $('#setup').hidden = true;
+  $('#introText').hidden = false;
+  await wait(4400);
+  intro.classList.add('gone');
+  document.body.classList.add('started');
+  document.body.dataset.scene = 'cake';
+  await wait(1200);
+  Cake.enter();
+}
+
+function replaySameSurprise() {
+  FX.stop();
+  Balloons.reset();
+  Message.reset();
+  $('#petals').innerHTML = '';
+  $('#rise').innerHTML = '';
+  document.body.classList.remove('started', 'lit', 'cine', 'slomo', 'balloons', 'hold', 'gal', 'msgmode');
+  document.body.dataset.scene = 'intro';
+  Avatar.el.classList.remove('show', 'big', 'exit');
+  Avatar.el.classList.add('gone');
+  Cake.reset();
+  startSequence();
 }
 
 /* =========================================================
@@ -920,8 +1092,10 @@ $('#music').addEventListener('click', () => Audio_.toggle());
 $('#wish').addEventListener('click', onAction);
 $('#cake').addEventListener('click', onAction);
 $('#cake').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAction(); } });
-$('#replay').addEventListener('click', () => {
-  location.search = new URLSearchParams({ name: S.display }).toString();
+
+$('#replaySame').addEventListener('click', replaySameSurprise);
+$('#replayNew').addEventListener('click', () => {
+  location.href = location.pathname;
 });
 
 document.body.dataset.scene = 'intro';
@@ -931,15 +1105,10 @@ Cake.build(); Cake.garland(); Cake.parallax(); Deco.build(); Marquee.build(); Ph
 
 $('#setup').addEventListener('submit', async e => {
   e.preventDefault();
-  if (!Photos.ready()) return;                              // name + 5 photos are required
+  if (!Photos.ready()) return;
   setName($('#inName').value); applyName();
-  setPhoto(Photos.list[Photos.queen].url);                  // the Queen photo becomes the profile picture
+  setPhoto(Photos.list[Photos.queen].url);
   Avatar.build();
-  Audio_.init(); Audio_.scene('ambient');                     // this tap unlocks audio
   $('#setup').classList.add('hide'); await wait(800);
-  $('#setup').hidden = true; $('#introText').hidden = false;
-  await wait(5200);                                         // the ambient track keeps playing here
-  $('#intro').classList.add('gone'); document.body.classList.add('started'); document.body.dataset.scene = 'cake';
-  await wait(1300);
-  Cake.enter();
+  startSequence();
 });

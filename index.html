@@ -7,15 +7,12 @@
 <title>A Birthday Surprise Made Just for You</title>
 <meta name="description" content="Light the candles, make a wish, cut the cake and open a heartfelt surprise.">
 
-<!-- Open Graph: rich link preview on WhatsApp, Facebook, Telegram, LinkedIn, Slack ...
-     og:image and og:url MUST be absolute https URLs. Replace YOUR-USERNAME / birthday-surprise with your
-     real address, or run:  python tools/set_site_url.py https://YOUR-USERNAME.github.io/birthday-surprise/ -->
+<!-- Open Graph: rich link preview on WhatsApp, Facebook, Telegram, LinkedIn, Slack -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="A Birthday Surprise Made Just for You">
 <meta property="og:description" content="Light the candles, make a wish, cut the cake and open a heartfelt surprise.">
 <meta property="og:image" content="https://abhinashkumarin.github.io/Birthday-Surprise/og.jpg">
 <meta property="og:url" content="https://abhinashkumarin.github.io/Birthday-Surprise/">
-<!-- optional extras -->
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -48,8 +45,6 @@
 <div class="lights" id="lights" aria-hidden="true"></div>
 <div class="fairy" id="fairy" aria-hidden="true"></div>
 <div class="mq" id="mq" aria-hidden="true"></div>
-<div class="bar top" aria-hidden="true"></div>
-<div class="bar bot" aria-hidden="true"></div>
 <p class="sub" id="sub" aria-live="polite"></p>
 
 <!-- SETUP / INTRO -->
@@ -58,14 +53,14 @@
   <form class="setup" id="setup" autocomplete="off">
     <p class="eyebrow">a surprise, made by hand</p>
     <h1 class="script">Birthday Surprise</h1>
-    <label>Birthday girl's name
+    <label>Birthday person's name
       <input type="text" id="inName" maxlength="24" required placeholder="e.g. Aarohi">
     </label>
     <div class="pick">
       <p class="pick-label">Choose 5 photos <small id="pickCount">0/5</small></p>
       <div class="slots" id="slots"></div>
       <input type="file" id="inPhotos" accept="image/*" multiple hidden>
-      <p class="pick-hint" id="pickHint">You can only proceed once you select 5 photos. Tap any photo to make her the ♛ Queen: she will appear in the center with a crown.</p>
+      <p class="pick-hint" id="pickHint">You can only proceed once you select 5 photos. Tap any photo to make it the ♛ Queen: it will appear in the center with a crown.</p>
     </div>
     <button class="gold-btn" id="begin" type="submit" disabled>Start the surprise ✦</button>
   </form>
@@ -78,7 +73,7 @@
 
 <div class="np" id="np" aria-live="polite"></div>
 
-<!-- Rigged character: separate layers (arms, body, head, eyelids, mouth) so she can move like a puppet -->
+<!-- Rigged character -->
 <div class="avatar" id="avatar" data-pose="idle" data-mouth="closed" aria-hidden="true">
   <div class="av-bubble" id="avBubble"></div>
   <div class="av-stage">
@@ -164,10 +159,28 @@
   <div class="g-in">
     <header class="g-head"><p class="g-eyebrow">our queen</p><h2 class="g-title" id="gTitle"></h2></header>
     <div class="g-wall" id="gWall"></div>
-    <button class="gold-btn g-next" id="gNext" type="button">A little message ✦</button>
+    <button class="gold-btn g-next" id="gNext" type="button">Continue ✦</button>
   </div>
   <div class="g-bunch l" id="bunchL"></div><div class="g-bunch r" id="bunchR"></div>
 </section>
+
+<!-- SONG PROMPT MODAL -->
+<div class="song-prompt" id="songPrompt" role="dialog" aria-modal="true" hidden>
+  <div class="sp-card">
+    <p class="sp-eyebrow">a special dedication</p>
+    <h3 class="script sp-title">A Song Just For You</h3>
+    <p class="sp-desc" id="spDesc">I want to play a special song for you before reading the message. Would you like to listen?</p>
+    <div class="sp-btns" id="spBtns">
+      <button class="gold-btn" id="songYes" type="button">Yes, Play Song ♪</button>
+      <button class="ghost-btn" id="songNo" type="button">No, Read Message ›</button>
+    </div>
+    <div class="sp-playing" id="spPlaying" hidden>
+      <div class="sp-wave"><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="sp-now" id="spNow">Playing your special song…</p>
+      <button class="ghost-btn sm" id="songSkip" type="button">Skip to Message ›</button>
+    </div>
+  </div>
+</div>
 
 <!-- MESSAGE -->
 <section class="msg" id="msg" aria-live="polite">
@@ -179,8 +192,11 @@
   </div>
 </section>
 
-<button class="skip" id="skip">Show all ›</button>
-<button class="replay" id="replay" aria-label="Replay">Replay ↻</button>
+<button class="skip" id="skip" type="button">Show all ›</button>
+<div class="end-actions" id="endActions">
+  <button class="end-btn" id="replaySame" type="button" aria-label="Replay surprise">Replay ↻</button>
+  <button class="end-btn primary" id="replayNew" type="button" aria-label="Start new surprise">New Surprise +</button>
+</div>
 
 <script src="script.index.js"></script>
 </body>
